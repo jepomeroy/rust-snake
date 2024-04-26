@@ -13,7 +13,7 @@ const MOVE_RATE: u128 = 200;
 const GAME_OVER_RATE: u128 = 2000;
 
 // Starting length of 3 blocks
-const SNAKE_LEN: i32 = 3;
+const SNAKE_LEN: u32 = 3;
 
 const BORDER_COLOR: Color = [0.2, 0.2, 0.2, 1.0];
 const GAME_OVER_COLOR: Color = [1.0, 0.0, 0.0, 0.4];
@@ -22,17 +22,17 @@ const FOOD_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 pub struct Game {
     snake: Snake,
     has_food: bool,
-    food_x: i32,
-    food_y: i32,
+    food_x: u32,
+    food_y: u32,
     game_over: bool,
     next_move: u128,
-    width: i32,
-    height: i32,
+    width: u32,
+    height: u32,
 }
 
 impl Game {
     /// New game
-    pub fn new(width: i32, height: i32) -> Self {
+    pub fn new(width: u32, height: u32) -> Self {
         Self {
             snake: Snake::new(SNAKE_LEN, width, height),
             has_food: false,
@@ -147,14 +147,14 @@ impl Game {
     }
 
     /// Create a new tuple representing the X and Y of new food location
-    fn make_food(&self) -> (i32, i32) {
+    fn make_food(&self) -> (u32, u32) {
         let mut rng = thread_rng();
-        let mut x = rng.gen_range(1, self.width - 1);
-        let mut y = rng.gen_range(1, self.height - 1);
+        let mut x = rng.gen_range(1..self.width - 1);
+        let mut y = rng.gen_range(1..self.height - 1);
 
         while self.snake.bad_touch(&Block { x, y }) {
-            x = rng.gen_range(1, self.width - 1);
-            y = rng.gen_range(1, self.height - 1);
+            x = rng.gen_range(1..self.width - 1);
+            y = rng.gen_range(1..self.height - 1);
         }
 
         (x, y)

@@ -30,8 +30,8 @@ impl Direction {
 
 #[derive(Copy, Clone)]
 pub struct Block {
-    pub x: i32,
-    pub y: i32,
+    pub x: u32,
+    pub y: u32,
 }
 
 pub struct Snake {
@@ -42,7 +42,7 @@ pub struct Snake {
 
 impl Snake {
     /// New Snake
-    pub fn new(len: i32, width: i32, height: i32) -> Self {
+    pub fn new(len: u32, width: u32, height: u32) -> Self {
         let dir = Snake::make_direction();
         let body = Snake::make_snake(len, width, height, &dir);
 
@@ -106,7 +106,7 @@ impl Snake {
     /// Create random direction
     fn make_direction() -> Direction {
         let mut rnd = thread_rng();
-        let dir = rnd.gen_range(0, 4);
+        let dir = rnd.gen_range(0..4);
 
         match dir {
             0 => Direction::UP,
@@ -117,12 +117,12 @@ impl Snake {
     }
 
     /// Create random position based on length, board size, and direction
-    fn make_snake(len: i32, width: i32, height: i32, dir: &Direction) -> LinkedList<Block> {
+    fn make_snake(len: u32, width: u32, height: u32, dir: &Direction) -> LinkedList<Block> {
         let mut body: LinkedList<Block> = LinkedList::new();
 
         let mut rnd = thread_rng();
-        let start_x = rnd.gen_range(len + 2, width - 3);
-        let start_y = rnd.gen_range(len + 2, height - 3);
+        let start_x = rnd.gen_range(len + 2..width - 3);
+        let start_y = rnd.gen_range(len + 2..height - 3);
 
         for i in 0..len {
             match dir {
