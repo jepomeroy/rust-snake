@@ -6,7 +6,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use crate::draw::{draw_block, draw_rectangle};
 use crate::snake::{Block, Direction, Snake};
 
-use rand::{thread_rng, Rng};
+use rand::{rng, Rng};
 
 // In milliseconds
 const MOVE_RATE: u128 = 200;
@@ -138,23 +138,23 @@ impl Game {
     /// Detect key press and convert them to directions
     pub fn key_pressed(&mut self, key: Key) {
         match key {
-            Key::Up => self.snake.new_direction(Direction::UP),
-            Key::Down => self.snake.new_direction(Direction::DOWN),
-            Key::Left => self.snake.new_direction(Direction::LEFT),
-            Key::Right => self.snake.new_direction(Direction::RIGHT),
+            Key::Up => self.snake.new_direction(Direction::Up),
+            Key::Down => self.snake.new_direction(Direction::Down),
+            Key::Left => self.snake.new_direction(Direction::Left),
+            Key::Right => self.snake.new_direction(Direction::Right),
             _ => (),
         };
     }
 
     /// Create a new tuple representing the X and Y of new food location
     fn make_food(&self) -> (u32, u32) {
-        let mut rng = thread_rng();
-        let mut x = rng.gen_range(1..self.width - 1);
-        let mut y = rng.gen_range(1..self.height - 1);
+        let mut rng = rng();
+        let mut x = rng.random_range(1..self.width - 1);
+        let mut y = rng.random_range(1..self.height - 1);
 
         while self.snake.bad_touch(&Block { x, y }) {
-            x = rng.gen_range(1..self.width - 1);
-            y = rng.gen_range(1..self.height - 1);
+            x = rng.random_range(1..self.width - 1);
+            y = rng.random_range(1..self.height - 1);
         }
 
         (x, y)
